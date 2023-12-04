@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        label {
+            width: 150px;
+            margin-right: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 1px;
+            font-size: 14px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <form id="registrationForm">
+            <div>
+                <label for="username">Tên đăng nhập:</label>
+                <input type="text" id="username" name="username" required minlength="5">
+            </div>
+            <div id="username-error" class="error-message"></div>
+
+            <div>
+                <label for="phone">Số điện thoại:</label>
+                <input type="text" id="phone" name="phone" required pattern="\d{10,}">
+            </div>
+            <div id="phone-error" class="error-message"></div>
+
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div id="email-error" class="error-message"></div>
+
+            <div>
+                <label for="password">Mật khẩu:</label>
+                <input type="password" id="password" name="password" required minlength="5">
+            </div>
+            <div id="password-error" class="error-message"></div>
+
+            <div>
+                <label for="confirmPassword">Nhập lại mật khẩu:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required equalTo="#password">
+            </div>
+            <div id="confirmPassword-error" class="error-message"></div>
+
+            <div>
+                <label for="more">Thông tin thêm:</label>
+                <input type="more" id="more" name="more" required>
+            </div>
+
+            <button type="submit" class="submit-button">Gửi</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#registrationForm").validate({
+                errorClass: "error",
+                errorElement: "span",
+                errorPlacement: function (error, element) {
+                    var inputId = $(element).attr("id");
+                    error.appendTo("#" + inputId + "-error");
+                },
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 5
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    confirmPassword: {
+                        required: true,
+                        equalTo: "#password"
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    phone: {
+                        required: true,
+                        pattern: /^\d{10,}$/
+                    }
+                },
+                messages: {
+                    username: {
+                        required: "Vui lòng nhập tên đăng nhập",
+                        minlength: "Tên đăng nhập phải có ít nhất 5 ký tự"
+                    },
+                    password: {
+                        required: "Vui lòng nhập mật khẩu",
+                        minlength: "Mật khẩu phải có ít nhất 5 ký tự"
+                    },
+                    confirmPassword: {
+                        required: "Vui lòng nhập lại mật khẩu",
+                        equalTo: "Mật khẩu không khớp"
+                    },
+                    email: {
+                        required: "Vui lòng nhập email",
+                        email: "Địa chỉ email không đúng định dạng"
+                    },
+                    phone: {
+                        required: "Vui lòng nhập số điện thoại",
+                        pattern: "Số điện thoại không hợp lệ"
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
